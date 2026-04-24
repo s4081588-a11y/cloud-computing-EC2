@@ -35,7 +35,7 @@ sudo -u ubuntu "$BACKEND/.venv/bin/pip" install --upgrade pip
 sudo -u ubuntu "$BACKEND/.venv/bin/pip" install -r "$BACKEND/requirements.txt"
 
 # -------------------------
-# PUBLIC IP FIX (safe)
+# PUBLIC IP 
 # -------------------------
 echo "Getting public IP..."
 PUBLIC_IP=$(curl -s http://checkip.amazonaws.com || echo "localhost")
@@ -117,7 +117,7 @@ systemctl enable nginx
 systemctl restart nginx
 
 # -------------------------
-# 🔥 YOUR REQUESTED DATA LOAD STEP
+#  DATA LOAD STEP
 # -------------------------
 
 echo "Loading AWS tables + S3 data..."
@@ -130,6 +130,8 @@ source .venv/bin/activate
 echo 'Creating DynamoDB tables...'
 python create_aws_tables.py
 
+python seed_aws_users.py
+
 echo 'Loading songs + uploading images to S3...'
 python load_aws_data.py \
   --file 2026a2_songs.json \
@@ -137,4 +139,4 @@ python load_aws_data.py \
   --bucket \"$S3_BUCKET_NAME\"
 "
 
-echo "DONE 🚀 EC2 fully bootstrapped"
+echo "DONE  EC2 fully bootstrapped"
