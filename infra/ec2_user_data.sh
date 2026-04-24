@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO_URL="${REPO_URL:-https://github.com/user-name/repo-name.git}"
+REPO_URL="${REPO_URL:-https://github.com/s4081588-a11y/cloud-computing-EC2.git}"
 BRANCH="${BRANCH:-main}"
 
 AWS_REGION="${AWS_REGION:-us-east-1}"
