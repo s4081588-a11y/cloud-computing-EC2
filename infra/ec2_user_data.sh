@@ -8,7 +8,7 @@ AWS_REGION="${AWS_REGION:-us-east-1}"
 USERS_TABLE_NAME="${USERS_TABLE_NAME:-music_shared_users}"
 MUSIC_TABLE_NAME="${MUSIC_TABLE_NAME:-music_shared_songs}"
 SUBSCRIPTIONS_TABLE_NAME="${SUBSCRIPTIONS_TABLE_NAME:-music_shared_subscriptions}"
-S3_BUCKET_NAME="${S3_BUCKET_NAME:-music-shared-private-covers-<AWS_ACCOUNT_ID>-<AWS_REGION>}"
+S3_BUCKET_NAME="${S3_BUCKET_NAME:-music-shared-private-covers-351543164084-us-east-1}"
 
 PORT=8000
 EC2_USER=ubuntu
