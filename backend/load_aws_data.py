@@ -12,7 +12,7 @@ import requests
 
 AWS_REGION = os.getenv("AWS_REGION", "us-east-1")
 DYNAMODB_ENDPOINT_URL = os.getenv("DYNAMODB_ENDPOINT_URL", "").strip()
-MUSIC_TABLE_NAME = os.getenv("MUSIC_TABLE_NAME", "music_shared_songs")
+MUSIC_TABLE_NAME = os.getenv("MUSIC_TABLE_NAME", "music")
 
 
 def _clean(value):

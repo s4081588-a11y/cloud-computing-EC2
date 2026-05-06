@@ -7,9 +7,9 @@ from botocore.exceptions import ClientError
 
 AWS_REGION = os.getenv("AWS_REGION", "us-east-1")
 DYNAMODB_ENDPOINT_URL = os.getenv("DYNAMODB_ENDPOINT_URL", "").strip()
-USERS_TABLE_NAME = os.getenv("USERS_TABLE_NAME", "music_shared_users")
-MUSIC_TABLE_NAME = os.getenv("MUSIC_TABLE_NAME", "music_shared_songs")
-SUBSCRIPTIONS_TABLE_NAME = os.getenv("SUBSCRIPTIONS_TABLE_NAME", "music_shared_subscriptions")
+USERS_TABLE_NAME = os.getenv("USERS_TABLE_NAME", "login")
+MUSIC_TABLE_NAME = os.getenv("MUSIC_TABLE_NAME", "music")
+SUBSCRIPTIONS_TABLE_NAME = os.getenv("SUBSCRIPTIONS_TABLE_NAME", "subscriptions")
 
 
 def _client_kwargs():

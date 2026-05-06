@@ -6,7 +6,7 @@ import boto3
 
 AWS_REGION = os.getenv("AWS_REGION", "us-east-1")
 DYNAMODB_ENDPOINT_URL = os.getenv("DYNAMODB_ENDPOINT_URL", "").strip()
-USERS_TABLE_NAME = os.getenv("USERS_TABLE_NAME", "music_shared_users")
+USERS_TABLE_NAME = os.getenv("USERS_TABLE_NAME", "login")
 
 # Required assignment pattern example:
 #   email: s3######0@student.rmit.edu.au ... s3######9@student.rmit.edu.au

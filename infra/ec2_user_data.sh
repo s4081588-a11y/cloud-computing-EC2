@@ -5,9 +5,9 @@ REPO_URL="${REPO_URL:-https://github.com/s4081588-a11y/cloud-computing-EC2.git}"
 BRANCH="${BRANCH:-main}"
 
 AWS_REGION="${AWS_REGION:-us-east-1}"
-USERS_TABLE_NAME="${USERS_TABLE_NAME:-music_shared_users}"
-MUSIC_TABLE_NAME="${MUSIC_TABLE_NAME:-music_shared_songs}"
-SUBSCRIPTIONS_TABLE_NAME="${SUBSCRIPTIONS_TABLE_NAME:-music_shared_subscriptions}"
+USERS_TABLE_NAME="${USERS_TABLE_NAME:-login}"
+MUSIC_TABLE_NAME="${MUSIC_TABLE_NAME:-music}"
+SUBSCRIPTIONS_TABLE_NAME="${SUBSCRIPTIONS_TABLE_NAME:-subscriptions}"
 S3_BUCKET_NAME="${S3_BUCKET_NAME:-music-shared-private-covers-351543164084-us-east-1}"
 
 PORT=8000
