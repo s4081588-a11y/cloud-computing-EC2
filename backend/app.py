@@ -319,7 +319,59 @@ def register():
     return jsonify({"message": "User registered"}), 201
 
 
+@app.route("/users", methods=["PUT", "DELETE", "GET"])
+@app.route("/api/users", methods=["PUT", "DELETE", "GET"])
+def handle_users():
+    if request.method == "GET":
+        email = _clean_text(request.args.get("email"))
+        if not email:
+            return jsonify({"message": "email is required"}), 400
+        user = users_table.get_item(Key={"email": email}).get("Item")
+        if not user:
+            return jsonify({"message": "User not found"}), 404
+        return jsonify({"email": user.get("email"), "username": user.get("username")})
+        
+    if request.method == "DELETE":
+        data = request.get_json(silent=True) or {}
+        email = _clean_text(data.get("email"))
+        if not email:
+            return jsonify({"message": "email is required"}), 400
+        users_table.delete_item(Key={"email": email})
+        return jsonify({"message": "User deleted"})
+
+    if request.method == "PUT":
+        data = request.get_json(silent=True) or {}
+        email = _clean_text(data.get("email"))
+        password = _clean_text(data.get("password"))
+        username = _clean_text(data.get("username") or data.get("user_name"))
+        if not email:
+            return jsonify({"message": "email is required"}), 400
+        
+        user = users_table.get_item(Key={"email": email}).get("Item")
+        if not user:
+            return jsonify({"message": "User not found"}), 404
+            
+        update_expr = []
+        expr_attr_values = {}
+        if password:
+            update_expr.append("password = :p")
+            expr_attr_values[":p"] = password
+        if username:
+            update_expr.append("username = :u")
+            update_expr.append("user_name = :u")
+            expr_attr_values[":u"] = username
+            
+        if update_expr:
+            users_table.update_item(
+                Key={"email": email},
+                UpdateExpression="SET " + ", ".join(update_expr),
+                ExpressionAttributeValues=expr_attr_values
+            )
+        return jsonify({"message": "User updated"})
+
+
 @app.route("/login", methods=["POST"])
+
 @app.route("/api/login", methods=["POST"])
 def login():
     data = request.get_json(silent=True) or {}
@@ -346,9 +398,61 @@ def login():
     )
 
 
-@app.route("/music", methods=["GET"])
-@app.route("/api/music", methods=["GET"])
-def search_music():
+@app.route("/music", methods=["GET", "POST", "PUT", "DELETE"])
+@app.route("/api/music", methods=["GET", "POST", "PUT", "DELETE"])
+def handle_music():
+    if request.method == "POST":
+        data = request.get_json(silent=True) or {}
+        title = _clean_text(data.get("title"))
+        artist = _clean_text(data.get("artist"))
+        year = _clean_text(data.get("year"))
+        album = _clean_text(data.get("album"))
+        
+        if not title or not artist or not year:
+            return jsonify({"message": "title, artist, and year are required"}), 400
+            
+        music_table.put_item(
+            Item={
+                "title": title,
+                "artist_year": f"{artist}#{year}",
+                "artist": artist,
+                "year": year,
+                "album": album,
+                "song_id": _song_id(title, artist, year)
+            }
+        )
+        return jsonify({"message": "Music created"}), 201
+        
+    if request.method == "PUT":
+        data = request.get_json(silent=True) or {}
+        title = _clean_text(data.get("title"))
+        artist = _clean_text(data.get("artist"))
+        year = _clean_text(data.get("year"))
+        album = _clean_text(data.get("album"))
+        
+        if not title or not artist or not year:
+            return jsonify({"message": "title, artist, and year are required"}), 400
+            
+        music_table.update_item(
+            Key={"title": title, "artist_year": f"{artist}#{year}"},
+            UpdateExpression="SET album = :a",
+            ExpressionAttributeValues={":a": album}
+        )
+        return jsonify({"message": "Music updated"})
+        
+    if request.method == "DELETE":
+        data = request.get_json(silent=True) or {}
+        title = _clean_text(data.get("title"))
+        artist = _clean_text(data.get("artist"))
+        year = _clean_text(data.get("year"))
+        
+        if not title or not artist or not year:
+            return jsonify({"message": "title, artist, and year are required"}), 400
+            
+        music_table.delete_item(Key={"title": title, "artist_year": f"{artist}#{year}"})
+        return jsonify({"message": "Music deleted"})
+
+    # GET method
     title = _clean_text(request.args.get("title", ""))
     artist = _clean_text(request.args.get("artist", ""))
     album = _clean_text(request.args.get("album", ""))
